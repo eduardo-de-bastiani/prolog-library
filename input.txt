@@ -1,0 +1,16 @@
+cadastrar_livro('Duna', 'Frank Herbert', 1965, '978-0-441-17271-9'),
+cadastrar_livro('A Arte de Ter Razão', 'Arthur Schopenhauer', 1892, '333-0-441-666-9'),
+listar_livros,
+
+cadastrar_membro('Diego Martins', '2023674', 'Administração'),
+cadastrar_membro('Eduarda Lima', '2023567', 'Psicologia'),
+listar_membros,
+
+emprestar_livro('475', '2023674', '978-0-452-28423-4', '2024-11-07'),
+listar_emprestimos,
+
+consultar_livro_por_titulo('O Senhor dos Aneis'),
+consultar_livro_por_autor('Arthur Schopenhauer'),
+consultar_livro_por_ano(1965),
+consultar_livro_por_isbn('978-0-452-28423-4'),
+consultar_livros_por_membro('2023674').
