@@ -105,7 +105,7 @@ consultar_livro_por_isbn(ISBN) :-
 consultar_livros_por_membro(Matricula) :-
     emprestimo(_, Matricula, ISBN, DataEmprestimo),
     livro(Titulo, Autor, Ano, ISBN),
-    format("Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w, Data de Empréstimo: ~w~n", [Titulo, Autor, Ano, ISBN, DataEmprestimo]).
+    format("Matrícula: ~w, Livro[Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w], Data de Empréstimo: ~w~n", [Matricula, Titulo, Autor, Ano, ISBN, DataEmprestimo]).
 
 % relatorio_livros_disponiveis :-
 
