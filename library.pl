@@ -7,9 +7,9 @@ livro('1984', 'George Orwell', 1949, '978-0-452-28423-4').
 
 % Definição da lista de livros
 :- dynamic lista_livros/2.
-lista_livros('head', '978-3-16-148410-0'). % Início da lista
+lista_livros('head', '978-3-16-148410-0').
 lista_livros('978-3-16-148410-0', '978-0-452-28423-4').
-lista_livros('978-0-452-28423-4', 'nil'). % Fim da lista
+lista_livros('978-0-452-28423-4', 'nil').
 
 % Definição dos membros
 :- dynamic membro/3.
@@ -26,16 +26,14 @@ lista_membros('2023890', 'nil').
 
 % Definição dos empréstimos
 :- dynamic emprestimo/4.
-emprestimo('123', '2023456', '978-3-16-148410-0', '2024-11-01'). % Alice Ferreira
-emprestimo('221', '2023123', '978-0-452-28423-4', '2024-11-03'). % Bruno Souza
-emprestimo('314', '2023890', '978-0-19-953556-9', '2024-11-05'). % Carla Menezes
+emprestimo('123', '2023456', '978-3-16-148410-0', '2024-11-01'). % Alice Ferreira <- O Senhor dos Aneis
+emprestimo('221', '2023123', '978-0-452-28423-4', '2024-11-03'). % Bruno Souza <- 1984
 
 % Definição da lista de empréstimos
 :- dynamic lista_emprestimos/2.
 lista_emprestimos('head', '123').
 lista_emprestimos('123', '221').
-lista_emprestimos('221', '314').
-lista_emprestimos('314', 'nil').
+lista_emprestimos('221', 'nil').
 
 % DEFINIÇÃO DAS REGRAS
 
@@ -131,10 +129,32 @@ consultar_livros_por_membro(Matricula) :-
     livro(Titulo, Autor, Ano, ISBN),
     format("Matrícula: ~w, Livro[Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w], Data de Empréstimo: ~w~n", [Matricula, Titulo, Autor, Ano, ISBN, DataEmprestimo]).
 
-% relatorio_livros_disponiveis :-
+% Definição do relatório de livros disponíveis
+relatorio_livros_disponiveis :- 
+    lista_livros('head', Proximo),
+    relatorio_livros_disponiveis_rec(Proximo).
 
-% relatorio_livros_emprestados :-
-    
+relatorio_livros_disponiveis_rec('nil') :- !.
+relatorio_livros_disponiveis_rec(ISBN) :- 
+    livro(Titulo, Autor, Ano, ISBN),
+    \+ emprestimo(_, _, ISBN, _),
+    format("Livro Disponível: [Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w]~n", [Titulo, Autor, Ano, ISBN]),
+    lista_livros(ISBN, Proximo),
+    relatorio_livros_disponiveis_rec(Proximo).
+
+% Definição do relatório de livros emprestados
+relatorio_livros_emprestados :- 
+    lista_livros('head', Proximo),
+    relatorio_livros_emprestados_rec(Proximo).
+
+relatorio_livros_emprestados_rec('nil') :- !.
+relatorio_livros_emprestados_rec(ISBN) :- 
+    livro(Titulo, Autor, Ano, ISBN),
+    emprestimo(_, _, ISBN, DataEmprestimo),
+    format("Livro Emprestado: [Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w, Data de Empréstimo: ~w]~n", [Titulo, Autor, Ano, ISBN, DataEmprestimo]),
+    lista_livros(ISBN, Proximo),
+    relatorio_livros_emprestados_rec(Proximo).
+
 % 4. Consultas
 % Consultar livros: por título, por autor, por ano, emprestados a um
 % membro, listar todos os livros, listar todos os membros, relatório de
