@@ -1,16 +1,29 @@
+format('~nTestando cadastro de livros...~n'),
 cadastrar_livro('Duna', 'Frank Herbert', 1965, '978-0-441-17271-9'),
-cadastrar_livro('A Arte de Ter Razão', 'Arthur Schopenhauer', 1892, '333-0-441-666-9'),
+cadastrar_livro('A Arte de Ter Razão', 'Arthur Schopenhauer', 1831, '333-0-441-666-921'),
+cadastrar_livro('A Nausea', 'Jean-Paul Sartre', 1938, '863-2-144-17271-5'),
+cadastrar_livro('As 48 Leis do Poder', 'Robert Greene', 1998, '276-897-1235-047'),
 listar_livros,
 
+format('~nTestando cadastro de membros...~n'),
 cadastrar_membro('Diego Martins', '2023674', 'Administração'),
 cadastrar_membro('Eduarda Lima', '2023567', 'Psicologia'),
 listar_membros,
 
-emprestar_livro('475', '2023674', '978-0-452-28423-4', '2024-11-07'),
+format('~nTestando empréstimo de livros...~n'),
+emprestar_livro('314', '2023890', '978-0-441-17271-9', '2024-11-05'), % Carla Menezes <- Duna
+emprestar_livro('475', '2023674', '333-0-441-666-921', '2024-11-07'), % Diego Martins <- A Arte de Ter Razão
 listar_emprestimos,
 
+format('~nTestando consulta de livros...~n'),
 consultar_livro_por_titulo('O Senhor dos Aneis'),
 consultar_livro_por_autor('Arthur Schopenhauer'),
 consultar_livro_por_ano(1965),
 consultar_livro_por_isbn('978-0-452-28423-4'),
-consultar_livros_por_membro('2023674').
+consultar_livros_por_membro('2023674'),
+
+format('~nTestando relatório de livros disponíveis...~n'),
+relatorio_livros_disponiveis,
+
+format('~nTestando relatório de livros emprestados...~n'),
+relatorio_livros_emprestados.
