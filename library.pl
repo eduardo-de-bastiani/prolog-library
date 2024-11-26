@@ -1,3 +1,4 @@
+
 % DEFINIÇÃO DOS FATOS
 
 % Definição dos livros
@@ -63,6 +64,30 @@ emprestar_livro(ID, Matricula, ISBN, DataEmprestimo) :-
     retract(lista_emprestimos(Ultimo, 'nil')),
     assertz(lista_emprestimos(Ultimo, ID)),
     assertz(lista_emprestimos(ID, 'nil')).
+
+% Definição da devolução de livros (remover o empréstimo pelo ID)
+devolver_livro(ID) :-
+    emprestimo(ID, Matricula, ISBN, DataEmprestimo),
+    retract(emprestimo(ID, Matricula, ISBN, DataEmprestimo)),
+    lista_emprestimos(Anterior, ID),
+    lista_emprestimos(ID, Proximo),
+    ( Anterior == 'head' ->
+        ( Proximo == 'nil' ->
+            retract(lista_emprestimos('head', ID)),
+            assertz(lista_emprestimos('head', 'nil'))
+        ;
+            retract(lista_emprestimos('head', ID)),
+            assertz(lista_emprestimos('head', Proximo))
+        )
+    ; Proximo == 'nil' ->
+        retract(lista_emprestimos(Anterior, ID)),
+        assertz(lista_emprestimos(Anterior, 'nil'))
+    ;
+        retract(lista_emprestimos(Anterior, ID)),
+        assertz(lista_emprestimos(Anterior, Proximo))
+    ),
+    format("Livro devolvido com sucesso: [ID: ~w, Matrícula: ~w, ISBN: ~w, Data do Empréstimo: ~w]~n", 
+           [ID, Matricula, ISBN, DataEmprestimo]).
 
 % Definição da listagem de livros
 listar_livros :-
