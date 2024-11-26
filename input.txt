@@ -14,7 +14,7 @@ format('~nTestando empréstimo de livros...~n'),
 emprestar_livro('314', '2023890', '978-0-441-17271-9', '2024-11-05'), % Carla Menezes <- Duna
 emprestar_livro('475', '2023674', '333-0-441-666-921', '2024-11-07'), % Diego Martins <- A Arte de Ter Razão
 listar_emprestimos,
-format('~nDevolvendo livro...~n'),
+format('~nTestando devolução de livros...~n'),
 devolver_livro('314'),
 listar_emprestimos,
 
