@@ -156,31 +156,28 @@ consultar_livros_por_membro(Matricula) :-
 
 % Definição do relatório de livros disponíveis
 relatorio_livros_disponiveis :- 
-    lista_livros('head', Proximo),
-    relatorio_livros_disponiveis_rec(Proximo).
+    findall(ISBN, livro(_, _, _, ISBN), ListaISBN),
+    relatorio_livros_disponiveis_rec(ListaISBN).
 
-relatorio_livros_disponiveis_rec('nil') :- !.
-relatorio_livros_disponiveis_rec(ISBN) :- 
+relatorio_livros_disponiveis_rec([]) :- !.
+relatorio_livros_disponiveis_rec([ISBN|Resto]) :-
     livro(Titulo, Autor, Ano, ISBN),
     \+ emprestimo(_, _, ISBN, _),
-    format("Livro Disponível: [Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w]~n", [Titulo, Autor, Ano, ISBN]),
-    lista_livros(ISBN, Proximo),
-    relatorio_livros_disponiveis_rec(Proximo).
+    format("Livro Disponível: [Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w]~n",
+           [Titulo, Autor, Ano, ISBN]),
+    relatorio_livros_disponiveis_rec(Resto).
+relatorio_livros_disponiveis_rec([_|Resto]) :-
+    relatorio_livros_disponiveis_rec(Resto).
 
 % Definição do relatório de livros emprestados
 relatorio_livros_emprestados :- 
-    lista_livros('head', Proximo),
-    relatorio_livros_emprestados_rec(Proximo).
+    findall(ISBN, emprestimo(_, _, ISBN, _), ListaISBN),
+    relatorio_livros_emprestados_rec(ListaISBN).
 
-relatorio_livros_emprestados_rec('nil') :- !.
-relatorio_livros_emprestados_rec(ISBN) :- 
+relatorio_livros_emprestados_rec([]) :- !.
+relatorio_livros_emprestados_rec([ISBN|Resto]) :-
     livro(Titulo, Autor, Ano, ISBN),
-    emprestimo(_, _, ISBN, DataEmprestimo),
-    format("Livro Emprestado: [Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w, Data de Empréstimo: ~w]~n", [Titulo, Autor, Ano, ISBN, DataEmprestimo]),
-    lista_livros(ISBN, Proximo),
-    relatorio_livros_emprestados_rec(Proximo).
-
-% 4. Consultas
-% Consultar livros: por título, por autor, por ano, emprestados a um
-% membro, listar todos os livros, listar todos os membros, relatório de
-% livros disponíveis, relatório de livros emprestados
+    emprestimo(_, Matricula, ISBN, DataEmprestimo),
+    format("Livro Emprestado: [Título: ~w, Autor: ~w, Ano: ~w, ISBN: ~w, Data de Empréstimo: ~w, Matrícula: ~w]~n", 
+           [Titulo, Autor, Ano, ISBN, DataEmprestimo, Matricula]),
+    relatorio_livros_emprestados_rec(Resto).
